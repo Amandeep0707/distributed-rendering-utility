@@ -1,0 +1,59 @@
+{
+    "machines": [
+        {
+            "name": "RT-SHAREDSTORAGE-PC",
+            "ip": "192.168.1.87",
+            "mac": "04-7C-16-E4-D9-57",
+            "username": "Admin",
+            "password": "123456",
+            "status": "online",
+            "selected": true
+        },
+        {
+            "name": "DESKTOP-IUF3INH",
+            "ip": "192.168.1.200",
+            "mac": "D8-BB-C1-8A-81-EB",
+            "username": "ikarus-3d",
+            "password": "123456",
+            "status": "online",
+            "selected": false
+        },
+        {
+            "name": "Bond-007",
+            "ip": "192.168.1.6",
+            "mac": "D8-BB-C1-40-DA-E6",
+            "username": "Admin",
+            "password": "123456",
+            "status": "online",
+            "selected": false
+        },
+        {
+            "name": "CQ-08",
+            "ip": "192.168.1.8",
+            "mac": "D8-BB-C1-3D-64-92",
+            "username": "Admin",
+            "password": "12345",
+            "status": "online",
+            "selected": false,
+            "ssh_client": null
+        },
+        {
+            "name": "PC-5",
+            "ip": "192.168.1.67",
+            "mac": "D8-BB-C1-39-8D-B0",
+            "username": "Admin",
+            "password": "1231",
+            "status": "offline",
+            "selected": false,
+            "ssh_client": null
+        },
+        {
+            "name": "CQ-05",
+            "ip": "192.168.1.36",
+            "mac": "04-7C-16-42-A1-50",
+            "username": "Admin",
+            "password": "123456",
+            "status": "offline"
+        }
+    ]
+}
