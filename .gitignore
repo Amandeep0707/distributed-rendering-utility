@@ -1,0 +1,8 @@
+# Exclude distribution files
+*dist/
+
+# Exclude build files
+*build/
+
+# Exclude Python cache files
+*distributed-render-utility.spec

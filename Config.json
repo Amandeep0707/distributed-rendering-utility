@@ -1,57 +1,82 @@
 {
     "machines": [
         {
+            "display_name": "Local Storage PC",
             "name": "RT-SHAREDSTORAGE-PC",
             "ip": "192.168.1.87",
             "mac": "04-7C-16-E4-D9-57",
             "username": "Admin",
             "password": "123456",
-            "status": "online",
+            "status": "unknown",
             "selected": true
         },
         {
-            "name": "DESKTOP-IUF3INH",
-            "ip": "192.168.1.200",
-            "mac": "D8-BB-C1-8A-81-EB",
-            "username": "ikarus-3d",
-            "password": "123456",
-            "status": "online",
-            "selected": false
-        },
-        {
+            "display_name": "Arya's PC",
             "name": "Bond-007",
             "ip": "192.168.1.6",
             "mac": "D8-BB-C1-40-DA-E6",
             "username": "Admin",
             "password": "123456",
-            "status": "online",
+            "status": "unknown",
             "selected": false
         },
         {
+            "display_name": "Ajit's PC",
             "name": "CQ-08",
             "ip": "192.168.1.8",
             "mac": "D8-BB-C1-3D-64-92",
             "username": "Admin",
             "password": "12345",
-            "status": "online",
+            "status": "unknown",
             "selected": false,
             "ssh_client": null
         },
         {
+            "display_name": "Aman's PC",
             "name": "PC-5",
             "ip": "192.168.1.67",
             "mac": "D8-BB-C1-39-8D-B0",
             "username": "Admin",
             "password": "1231",
-            "status": "offline",
+            "status": "unknown",
             "selected": false,
             "ssh_client": null
         },
         {
+            "display_name": "Vishal's PC",
+            "name": "DESKTOP-OQ67Q0S",
+            "ip": "192.168.1.33",
+            "mac": "2C-F0-5D-D1-95-AB",
+            "username": "visha",
+            "password": "99918@Spic",
+            "status": "offline"
+        },
+        {
+            "display_name": "Render Node 1",
+            "name": "DESKTOP-IUF3INH",
+            "ip": "192.168.1.73",
+            "mac": "D8-BB-C1-8A-81-EB",
+            "username": "ikarus-3d",
+            "password": "123456",
+            "status": "unknown",
+            "selected": false
+        },
+        {
+            "display_name": "Render Node 2",
             "name": "CQ-05",
             "ip": "192.168.1.36",
             "mac": "04-7C-16-42-A1-50",
             "username": "Admin",
+            "password": "123456",
+            "status": "unknown",
+            "selected": false
+        },
+        {
+            "display_name": "Render Node 3",
+            "name": "DESKTOP-KQRPJPE",
+            "ip": "192.168.1.138",
+            "mac": "7C-10-C9-BE-66-E1",
+            "username": "Ikarus",
             "password": "123456",
             "status": "offline"
         }

@@ -128,7 +128,9 @@ class WolSshRenderUtility:
         self.machine_details_var = ctk.StringVar(value="")
         machine_details_label = ctk.CTkLabel(
             self.details_frame,
-            textvariable=self.machine_details_var
+            textvariable=self.machine_details_var,
+            anchor="w",
+            compound="left",
         )
         machine_details_label.pack(anchor="w", padx=10, pady=5)
         
@@ -294,7 +296,7 @@ class WolSshRenderUtility:
             
             machine_button = ctk.CTkButton(
                 machine_frame,
-                text=machine.get("name", f"Machine {idx+1}"),
+                text=machine.get("display_name", f"Machine {idx+1}"),
                 fg_color="transparent",
                 hover_color="#2a2a2a",
                 anchor="w",
@@ -326,7 +328,11 @@ class WolSshRenderUtility:
         dialog.geometry(f'+{x}+{y}')
         
         # Form fields
-        ctk.CTkLabel(dialog, text="Machine Name:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
+        ctk.CTkLabel(dialog, text="Display Name:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
+        display_name_var = ctk.StringVar()
+        ctk.CTkEntry(dialog, textvariable=display_name_var, width=250).grid(row=0, column=1, padx=10, pady=5)
+
+        ctk.CTkLabel(dialog, text="Client Name:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
         name_var = ctk.StringVar()
         ctk.CTkEntry(dialog, textvariable=name_var, width=250).grid(row=0, column=1, padx=10, pady=5)
         
@@ -353,6 +359,7 @@ class WolSshRenderUtility:
         
         def validate_and_save():
             # Validate inputs
+            display_name = display_name_var.get().strip()
             name = name_var.get().strip()
             ip = ip_var.get().strip()
             mac = mac_var.get().strip()
@@ -360,7 +367,7 @@ class WolSshRenderUtility:
             password = password_var.get()
             
             # Simple validation
-            if not name or not ip or not mac or not username or not password:
+            if not display_name or not name or not ip or not mac or not username or not password:
                 messagebox.showerror("Error", "All fields are required", parent=dialog)
                 return
             
@@ -378,6 +385,7 @@ class WolSshRenderUtility:
             
             # Add the machine
             new_machine = {
+                "display_name": display_name,
                 "name": name,
                 "ip": ip,
                 "mac": mac,
@@ -425,7 +433,11 @@ class WolSshRenderUtility:
         dialog.geometry(f'+{x}+{y}')
         
         # Form fields
-        ctk.CTkLabel(dialog, text="Machine Name:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
+        ctk.CTkLabel(dialog, text="Client Name:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
+        display_name_var = ctk.StringVar(value=selected_machine.get("name", ""))
+        ctk.CTkEntry(dialog, textvariable=display_name_var, width=250).grid(row=0, column=1, padx=10, pady=5)
+
+        ctk.CTkLabel(dialog, text="Client Name:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
         name_var = ctk.StringVar(value=selected_machine.get("name", ""))
         ctk.CTkEntry(dialog, textvariable=name_var, width=250).grid(row=0, column=1, padx=10, pady=5)
         
@@ -452,6 +464,7 @@ class WolSshRenderUtility:
         
         def validate_and_update():
             # Validate inputs
+            display_name = display_name_var.get().strip()
             name = name_var.get().strip()
             ip = ip_var.get().strip()
             mac = mac_var.get().strip()
@@ -459,7 +472,7 @@ class WolSshRenderUtility:
             password = password_var.get()
             
             # Simple validation
-            if not name or not ip or not mac or not username or not password:
+            if not display_name or not name or not ip or not mac or not username or not password:
                 messagebox.showerror("Error", "All fields are required", parent=dialog)
                 return
             
@@ -477,6 +490,7 @@ class WolSshRenderUtility:
             
             # Update the machine
             updated_machine = {
+                "display_name": display_name,
                 "name": name,
                 "ip": ip,
                 "mac": mac,
@@ -541,8 +555,9 @@ class WolSshRenderUtility:
         # Update the UI
         self.machine_name_var.set(machine.get("name", "Machine"))
         
-        details = f"IP: {machine.get('ip', 'N/A')}\n"
-        details += f"MAC: {machine.get('mac', 'N/A')}\n"
+        details = f"HostName: {machine.get('name', 'N/A')}     "
+        details += f"IP: {machine.get('ip', 'N/A')}     "
+        details += f"MAC: {machine.get('mac', 'N/A')}     "
         details += f"Status: {machine.get('status', 'Unknown').capitalize()}"
         
         self.machine_details_var.set(details)
