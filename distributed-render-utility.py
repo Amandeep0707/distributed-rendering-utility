@@ -61,7 +61,7 @@ class WolSshRenderUtility:
     def create_header_frame(self):
         """Create the header frame with title and buttons"""
         header_frame = ctk.CTkFrame(self.root)
-        header_frame.grid(row=0, column=0, padx=5, pady=(5, 5), sticky="ew")
+        header_frame.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
         
         # App title
         title_label = ctk.CTkLabel(

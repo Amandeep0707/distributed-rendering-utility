@@ -6,3 +6,4 @@
 
 # Exclude Python cache files
 *distributed-render-utility.spec
+*src/modules/__pycache__/
