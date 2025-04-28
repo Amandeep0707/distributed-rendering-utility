@@ -1,8 +1,9 @@
 import customtkinter as ctk
 
 class MachineList(ctk.CTkFrame):
-    def __init__(self, master=None, **kwargs):
+    def __init__(self, app, master=None, **kwargs):
         super().__init__(master, **kwargs)
+        self.app = app
         self.frame = ctk.CTkFrame(master)
         self.frame.pack(padx=(5, 0), pady=5, anchor="w", side="left", fill="y")
 
@@ -13,3 +14,82 @@ class MachineList(ctk.CTkFrame):
         # Add Machine Listbox
         self.machine_list_frame = ctk.CTkScrollableFrame(self.frame, fg_color="transparent", width=350)
         self.machine_list_frame.pack(fill="both", expand=True)
+
+        self.update_list(app.machines)
+
+    def update_list(self, machines):
+
+        """
+        Update the machine list with the current machines.
+        This function should be called whenever the machine list changes.
+        """
+        # Clear the current list
+        for widget in self.machine_list_frame.winfo_children():
+            widget.destroy()
+
+        # Add machines to the list
+        self.machine_buttons = []
+        for i, machine in enumerate(machines):
+            machine_frame = ctk.CTkFrame(self.machine_list_frame)
+            machine_frame.pack(fill="x", padx=5, pady=2)
+
+            # Determine status indicator color
+            status_color = "#3a3a3a"  # Default gray for unknown
+            status_text = "Unknown"
+            if machine.get("status") == "online":
+                status_color = "#4CAF50"  # Green for online
+                status_text = "Online"
+            elif machine.get("status") == "offline":
+                status_color = "#F44336"  # Red for offline
+                status_text = "Offline"
+            elif machine.get("status") == "rendering":
+                status_color = "#2196F3"  # Blue for rendering
+                status_text = "Rendering"
+            elif machine.get("status") == "unknown":
+                status_color = "#202020"  # Grey for rendering
+                status_text = "Unknown"
+
+            # In the update_machine_list method, add a progress indicator for rendering machines
+            if machine.get("status") == "rendering":
+                # Existing code
+                status_label = ctk.CTkLabel(
+                    machine_frame,
+                    text="Rendering",
+                    width=70
+                )
+                status_label.pack(side="right", padx=5, pady=5)
+                
+                # Add a progress indicator (You could use a determinate progress bar when you have actual progress data)
+                progress_bar = ctk.CTkProgressBar(machine_frame, width=100)
+                progress_bar.pack(side="right", padx=5, pady=5)
+                progress_bar.configure(mode="determinate",require_redraw=True)
+                progress_value = machine.get("progress", 0) / 100
+                progress_bar.set(progress_value)
+                machine["progress_bar"] = progress_bar
+
+            status_indicator = ctk.CTkLabel(
+                machine_frame, 
+                text="",
+                width=15,
+                fg_color=status_color,
+                corner_radius=5
+            )
+            status_indicator.pack(side="left", padx=5, pady=5)
+
+            machine_button = ctk.CTkButton(
+                machine_frame,
+                text=machine.get("display_name", f"Machine {i+1}"),
+                fg_color="transparent",
+                hover_color="#505050",
+                anchor="w",
+                command=lambda m=machine: self.app.machine_details.on_machine_select(m)
+            )
+            machine_button.pack(side="left", padx=5, pady=5, fill="x", expand=True)
+            self.machine_buttons.append(machine_button)
+
+            status_label = ctk.CTkLabel(
+                machine_frame,
+                text=status_text,
+                width=70
+            )
+            status_label.pack(side="right", padx=5, pady=5)

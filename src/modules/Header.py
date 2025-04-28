@@ -1,8 +1,9 @@
 import customtkinter as ctk
 
 class Header(ctk.CTkFrame):
-    def __init__(self, master=None, **kwargs):
+    def __init__(self, app, master=None, **kwargs):
         super().__init__(master, **kwargs)
+        self.app = app
         self.frame = ctk.CTkFrame(master)
         self.frame.pack(padx=5, pady=(5, 0), anchor="n", fill="x")
 
@@ -13,6 +14,7 @@ class Header(ctk.CTkFrame):
         # Add Machine Button
         self.add_machine_button = ctk.CTkButton(
             self.frame,
-            text="Add Machine"
-        )
+            text="Add Machine",
+            command=lambda: self.app.machine_manager.add_machine()
+            )
         self.add_machine_button.pack(side="right", padx=5, pady=5)
