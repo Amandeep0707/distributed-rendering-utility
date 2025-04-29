@@ -13,7 +13,7 @@ class App:
     def __init__(self, root):
         self.root = root
         self.root.title("Render Utility")
-        self.root.geometry("1280x720")
+        self.root.geometry("1600x900")
         self.root.minsize(1000, 600)
 
         self.active_machine = None  # Currently selected machine
@@ -44,7 +44,7 @@ class App:
         self.render_log = RenderLog(self.machine_details_frame)
 
         # Create Footer
-        self.footer = Footer(self.main_frame)
+        self.footer = Footer(self, self.main_frame)
 
         self.log_manager = LogManager(self)
         self.machine_manager = MachineManager(self)

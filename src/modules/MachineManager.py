@@ -302,9 +302,8 @@ class MachineManager:
                 try:
                     # Create a socket and set a shorter timeout
                     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    sock.settimeout(2)  # 2 second timeout
+                    sock.settimeout(1)  # 1 second timeout
                     
-                    # Try to connect to SSH port (22)
                     result = sock.connect_ex((machine.get("ip"), 22))
                     sock.close()
                     

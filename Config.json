@@ -8,7 +8,8 @@
             "username": "Admin",
             "password": "123456",
             "status": "online",
-            "selected": false
+            "selected": false,
+            "progress": 0
         },
         {
             "display_name": "Arya's PC",
@@ -18,7 +19,8 @@
             "username": "Admin",
             "password": "123456",
             "status": "online",
-            "selected": false
+            "selected": false,
+            "progress": 0
         },
         {
             "display_name": "Ajit's PC",
@@ -28,7 +30,8 @@
             "username": "Admin",
             "password": "12345",
             "status": "online",
-            "selected": false
+            "selected": false,
+            "progress": 0
         },
         {
             "display_name": "Aman's PC",
@@ -38,7 +41,8 @@
             "username": "Admin",
             "password": "1231",
             "status": "offline",
-            "selected": false
+            "selected": false,
+            "progress": 0
         },
         {
             "display_name": "Vishal's PC",
@@ -48,37 +52,51 @@
             "username": "visha",
             "password": "99918@Spic",
             "status": "online",
-            "selected": false
+            "selected": false,
+            "progress": 0
         },
         {
             "display_name": "Render Node 1",
             "name": "DESKTOP-IUF3INH",
-            "ip": "192.168.1.73",
+            "ip": "192.168.1.57",
             "mac": "D8-BB-C1-8A-81-EB",
             "username": "ikarus-3d",
             "password": "123456",
-            "status": "offline",
-            "selected": true
+            "status": "online",
+            "selected": false,
+            "progress": 0
         },
         {
             "display_name": "Render Node 2",
             "name": "CQ-05",
-            "ip": "192.168.1.36",
+            "ip": "192.168.1.77",
             "mac": "04-7C-16-42-A1-50",
             "username": "Admin",
             "password": "123456",
-            "status": "offline",
-            "selected": false
+            "status": "online",
+            "selected": false,
+            "progress": 0
         },
         {
             "display_name": "Render Node 3",
             "name": "DESKTOP-KQRPJPE",
-            "ip": "192.168.1.138",
+            "ip": "192.168.1.79",
             "mac": "7C-10-C9-BE-66-E1",
             "username": "Ikarus",
             "password": "123456",
-            "status": "offline",
-            "selected": false
+            "status": "online",
+            "selected": false,
+            "progress": 0
+        },
+        {
+            "display_name": "Render Node 4",
+            "name": "DESKTOP-5N25HUP",
+            "ip": "192.168.1.34",
+            "mac": "2C-F0-5D-77-91-C4",
+            "username": "salman siddiqui",
+            "password": "12345",
+            "status": "online",
+            "selected": true
         }
     ]
 }
