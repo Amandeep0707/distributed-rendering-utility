@@ -7,8 +7,8 @@
             "mac": "04-7C-16-E4-D9-57",
             "username": "Admin",
             "password": "123456",
-            "status": "unknown",
-            "selected": true
+            "status": "online",
+            "selected": false
         },
         {
             "display_name": "Arya's PC",
@@ -17,17 +17,17 @@
             "mac": "D8-BB-C1-40-DA-E6",
             "username": "Admin",
             "password": "123456",
-            "status": "unknown",
+            "status": "online",
             "selected": false
         },
         {
             "display_name": "Ajit's PC",
             "name": "CQ-08",
-            "ip": "192.168.1.8",
+            "ip": "192.168.1.20",
             "mac": "D8-BB-C1-3D-64-92",
             "username": "Admin",
             "password": "12345",
-            "status": "unknown",
+            "status": "online",
             "selected": false
         },
         {
@@ -37,7 +37,7 @@
             "mac": "D8-BB-C1-39-8D-B0",
             "username": "Admin",
             "password": "1231",
-            "status": "unknown",
+            "status": "offline",
             "selected": false
         },
         {
@@ -47,7 +47,7 @@
             "mac": "2C-F0-5D-D1-95-AB",
             "username": "visha",
             "password": "99918@Spic",
-            "status": "unknown",
+            "status": "online",
             "selected": false
         },
         {
@@ -57,8 +57,8 @@
             "mac": "D8-BB-C1-8A-81-EB",
             "username": "ikarus-3d",
             "password": "123456",
-            "status": "unknown",
-            "selected": false
+            "status": "offline",
+            "selected": true
         },
         {
             "display_name": "Render Node 2",
@@ -67,7 +67,7 @@
             "mac": "04-7C-16-42-A1-50",
             "username": "Admin",
             "password": "123456",
-            "status": "unknown",
+            "status": "offline",
             "selected": false
         },
         {
@@ -77,7 +77,7 @@
             "mac": "7C-10-C9-BE-66-E1",
             "username": "Ikarus",
             "password": "123456",
-            "status": "unknown",
+            "status": "offline",
             "selected": false
         }
     ]

@@ -7,6 +7,7 @@ from modules.RenderLog import RenderLog
 from modules.ConfigManager import ConfigManager
 from modules.LogManager import LogManager
 from modules.MachineManager import MachineManager
+from modules.RenderManager import RenderManager
 
 class App:
     def __init__(self, root):
@@ -15,16 +16,12 @@ class App:
         self.root.geometry("1280x720")
         self.root.minsize(1000, 600)
 
+        self.active_machine = None  # Currently selected machine
         self.render_logs = {}  # Dictionary to hold render logs for each machine
 
         # Load configuration
         self.config_manager = ConfigManager("config.json")
         self.machines = self.config_manager.load_config()
-
-        # Initialize render logs
-        self.log_manager = LogManager(self)
-
-        self.machine_manager = MachineManager(self)
 
         # Create Main frame
         self.main_frame = ctk.CTkFrame(root, fg_color="transparent")
@@ -48,6 +45,10 @@ class App:
 
         # Create Footer
         self.footer = Footer(self.main_frame)
+
+        self.log_manager = LogManager(self)
+        self.machine_manager = MachineManager(self)
+        self.render_manager = RenderManager(self)
 
 if __name__ == "__main__":
     root = ctk.CTk()

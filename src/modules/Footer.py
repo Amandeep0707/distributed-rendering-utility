@@ -7,7 +7,13 @@ class Footer(ctk.CTkFrame):
         self.frame.pack(padx=5, pady=(0, 5), anchor="s", fill="x")
 
         self.blender_frame = ctk.CTkFrame(self.frame, fg_color="transparent")
-        self.blender_frame.pack(fill="x")
+        self.blender_frame.pack(fill="x", expand=True)
+
+        self.output_path_frame = ctk.CTkFrame(self.frame, fg_color="transparent")
+        self.output_path_frame.pack(fill="x", expand=True)
+
+        self.render_args_frame = ctk.CTkFrame(self.frame, fg_color="transparent")
+        self.render_args_frame.pack(fill="x", expand=True)
 
         self.blender_label = ctk.CTkLabel(self.blender_frame, text="Browse File:")
         self.blender_label.pack(side="left", padx=10, pady=5)
@@ -19,8 +25,12 @@ class Footer(ctk.CTkFrame):
         self.browse_button = ctk.CTkButton(self.blender_frame, text="Browse", command=lambda: self.on_browse(self.blender_path_field))
         self.browse_button.pack(side="left", padx=(0, 5), pady=5)
 
-        self.render_args_frame = ctk.CTkFrame(self.frame, fg_color="transparent")
-        self.render_args_frame.pack(fill="x")
+        self.output_path_label = ctk.CTkLabel(self.output_path_frame, text="Output Path:")
+        self.output_path_label.pack(side="left", padx=10, pady=5)
+
+        self.output_path_field = ctk.StringVar(value="//render_output/")
+        self.output_path_entry = ctk.CTkEntry(self.output_path_frame, textvariable=self.output_path_field, width=300)
+        self.output_path_entry.pack(side="left", padx=(0, 5), pady=5, fill="x", expand="true")
 
         self.render_args_label = ctk.CTkLabel(self.render_args_frame, text="Render Arguments:")
         self.render_args_label.pack(side="left", padx=10, pady=5)

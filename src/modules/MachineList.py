@@ -65,7 +65,6 @@ class MachineList(ctk.CTkFrame):
                 progress_bar.configure(mode="determinate",require_redraw=True)
                 progress_value = machine.get("progress", 0) / 100
                 progress_bar.set(progress_value)
-                machine["progress_bar"] = progress_bar
 
             status_indicator = ctk.CTkLabel(
                 machine_frame, 

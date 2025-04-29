@@ -13,8 +13,7 @@ class LogManager:
             self.app.render_logs[machine["name"]] = ""
         self.app.render_logs[machine["name"]] += line
 
-        selected_machine = next((m for m in self.app.machines if m.get("selected", False)), None)
-        if selected_machine and selected_machine.get("name") == machine["name"]:
+        if machine and machine.get("name") == machine["name"]:
             self.change_log_display(machine)
 
     def change_log_display(self, machine):
