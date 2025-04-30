@@ -8,7 +8,7 @@
             "username": "Admin",
             "password": "123456",
             "status": "online",
-            "selected": false,
+            "selected": true,
             "progress": 0
         },
         {
@@ -96,7 +96,7 @@
             "username": "salman siddiqui",
             "password": "12345",
             "status": "online",
-            "selected": true
+            "selected": false
         }
     ]
 }

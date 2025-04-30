@@ -310,13 +310,13 @@ class MachineManager:
                     # If result is 0, connection was successful
                     if result == 0:
                         machine["status"] = "online"
-                        self.log_manager.log(machine, f"Machine status: online")
+                        self.log_manager.log(machine, f"Machine status: online", False)
                     else:
                         machine["status"] = "offline"
-                        self.log_manager.log(machine, f"Machine status: offline (connection failed)")
+                        self.log_manager.log(machine, f"Machine status: offline (connection failed)", False)
                 except Exception as e:
                     machine["status"] = "unknown"
-                    self.log_manager.log(machine, f"Error checking machine status: {str(e)}")
+                    self.log_manager.log(machine, f"Error checking machine status: {str(e)}", False)
 
             # Update the UI from the main thread
             self.app.root.after(0, lambda: self.app.machine_list.update_list(self.app.machines))

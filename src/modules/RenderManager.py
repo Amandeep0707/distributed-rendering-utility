@@ -45,7 +45,7 @@ class RenderManager:
                 server_path = os.path.dirname(blender_file)
                 
                 # Map the drive
-                map_cmd = f'net use Y: "{server_path}" /user:{machine["username"]} {machine["password"]} 2>&1'
+                map_cmd = f'net use Y: "{server_path}" /user:{machine["username"]} {machine["password"]} /persistent:yes 2>&1'
                 stdin, stdout, stderr = client.exec_command(map_cmd)
                 output = stdout.read().decode() + stderr.read().decode()
                 
@@ -72,23 +72,26 @@ class RenderManager:
                         
                         # Monitor the output
                         for line in stdout:
-                            self.log_manager.log(machine, line.strip())
-                            
-                            # Try to parse progress information
-                            if "Rendered" in line and "Sample" in line:
+                            if "Sample" in line:
                                 try:
-                                    # Example: Rendered 50/100 Samples
                                     parts = line.split()
                                     for i, part in enumerate(parts):
-                                        if "/" in part and i > 0 and parts[i-1] == "Rendered":
+                                        if "/" in part and i > 0 and parts[i-1] == "Sample":
                                             current, total = map(int, part.split("/"))
                                             progress = int(current / total * 100)
                                             machine["progress"] = progress
                                             # Update UI on the main thread
-                                            self.app.root.after(0, lambda: self.app.machine_list.update_list(self.app.machines))
+                                            # self.app.root.after(0, lambda: self.app.machine_list.update_list(self.app.machines))
+                                        if "Fra" in part:
+                                            machine["current_frame"] = part.strip("Fra:")
                                             break
                                 except Exception as e:
                                     self.log_manager.log(machine, f"Error parsing progress: {e}")
+                            
+                            if "error" or "wrong" in line.lower():
+                                self.log_manager.log(machine, f"Something's Wrong: {line.strip()}")
+                                machine["status"] = "error"
+                                # self.app.root.after(0, lambda: self.app.machine_list.update_list(self.app.machines))
                         
                         # Check for errors
                         error_output = stderr.read().decode()

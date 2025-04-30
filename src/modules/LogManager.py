@@ -5,7 +5,7 @@ class LogManager:
     def __init__(self, app):
         self.app = app
 
-    def log(self, machine, message):
+    def log(self, machine, message, update_display=True):
         timestamp = datetime.now().strftime("[%H:%M:%S]")
         line = f"{timestamp} {message}\n"
 
@@ -13,7 +13,7 @@ class LogManager:
             self.app.render_logs[machine["name"]] = ""
         self.app.render_logs[machine["name"]] += line
 
-        if machine and machine.get("name") == machine["name"]:
+        if update_display and machine and machine.get("name") == machine["name"]:
             self.change_log_display(machine)
 
     def change_log_display(self, machine):

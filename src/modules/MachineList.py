@@ -12,7 +12,7 @@ class MachineList(ctk.CTkFrame):
         self.title_label.pack(anchor="w", side="top", pady=5, padx=(10, 5))
 
         # Add Machine Listbox
-        self.machine_list_frame = ctk.CTkScrollableFrame(self.frame, fg_color="transparent", width=350)
+        self.machine_list_frame = ctk.CTkScrollableFrame(self.frame, fg_color="transparent", width=450)
         self.machine_list_frame.pack(fill="both", expand=True)
 
         self.update_list(app.machines)
@@ -45,6 +45,9 @@ class MachineList(ctk.CTkFrame):
             elif machine.get("status") == "rendering":
                 status_color = "#2196F3"  # Blue for rendering
                 status_text = "Rendering"
+            elif machine.get("status") == "error":
+                status_color = "#f1dd5a"  # Yellow for Error
+                status_text = "Error"
             elif machine.get("status") == "unknown":
                 status_color = "#202020"  # Grey for rendering
                 status_text = "Unknown"
@@ -54,22 +57,24 @@ class MachineList(ctk.CTkFrame):
                 # Existing code
                 status_label = ctk.CTkLabel(
                     machine_frame,
-                    text="Rendering",
-                    width=70
+                    text=f"Rendering: {machine.get('current_frame', '--')}",
+                    width=70,
+                    font=ctk.CTkFont(size=15, weight="bold"),
                 )
                 status_label.pack(side="right", padx=5, pady=5)
                 
                 # Add a progress indicator (You could use a determinate progress bar when you have actual progress data)
                 progress_bar = ctk.CTkProgressBar(machine_frame, width=100)
                 progress_bar.pack(side="right", padx=5, pady=5)
-                progress_bar.configure(mode="determinate",require_redraw=True)
+                progress_bar.configure(mode="determinate", require_redraw=True)
                 progress_value = machine.get("progress", 0) / 100
                 progress_bar.set(progress_value)
 
             status_indicator = ctk.CTkLabel(
                 machine_frame, 
                 text="",
-                width=15,
+                width=10,
+                height=10,
                 fg_color=status_color,
                 corner_radius=5
             )
@@ -86,9 +91,10 @@ class MachineList(ctk.CTkFrame):
             machine_button.pack(side="left", padx=5, pady=5, fill="x", expand=True)
             self.machine_buttons.append(machine_button)
 
-            status_label = ctk.CTkLabel(
-                machine_frame,
-                text=status_text,
-                width=70
-            )
-            status_label.pack(side="right", padx=5, pady=5)
+            if not machine.get("status") == "rendering":
+                status_label = ctk.CTkLabel(
+                    machine_frame,
+                    text=status_text,
+                    width=70
+                )
+                status_label.pack(side="right", padx=5, pady=5)
