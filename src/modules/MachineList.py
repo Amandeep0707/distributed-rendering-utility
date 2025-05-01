@@ -18,7 +18,6 @@ class MachineList(ctk.CTkFrame):
         self.update_list(app.machines)
 
     def update_list(self, machines):
-
         """
         Update the machine list with the current machines.
         This function should be called whenever the machine list changes.
@@ -55,22 +54,21 @@ class MachineList(ctk.CTkFrame):
             # In the update_machine_list method, add a progress indicator for rendering machines
             if machine.get("status") == "rendering":
                 # Existing code
-                status_label = ctk.CTkLabel(
+                self.status_label = ctk.CTkLabel(
                     machine_frame,
-                    text=f"Rendering: {machine.get('current_frame', '--')}",
+                    text=f"Rendering: {machine.get('current_frame', ' ')}",
                     width=70,
-                    font=ctk.CTkFont(size=15, weight="bold"),
                 )
-                status_label.pack(side="right", padx=5, pady=5)
+                self.status_label.pack(side="right", padx=5, pady=5)
                 
                 # Add a progress indicator (You could use a determinate progress bar when you have actual progress data)
-                progress_bar = ctk.CTkProgressBar(machine_frame, width=100)
-                progress_bar.pack(side="right", padx=5, pady=5)
-                progress_bar.configure(mode="determinate", require_redraw=True)
+                self.progress_bar = ctk.CTkProgressBar(machine_frame, width=100)
+                self.progress_bar.pack(side="right", padx=5, pady=5)
+                self.progress_bar.configure(mode="determinate", require_redraw=True)
                 progress_value = machine.get("progress", 0) / 100
-                progress_bar.set(progress_value)
+                self.progress_bar.set(progress_value)
 
-            status_indicator = ctk.CTkLabel(
+            self.status_indicator = ctk.CTkLabel(
                 machine_frame, 
                 text="",
                 width=10,
@@ -78,7 +76,7 @@ class MachineList(ctk.CTkFrame):
                 fg_color=status_color,
                 corner_radius=5
             )
-            status_indicator.pack(side="left", padx=5, pady=5)
+            self.status_indicator.pack(side="left", padx=5, pady=5)
 
             machine_button = ctk.CTkButton(
                 machine_frame,

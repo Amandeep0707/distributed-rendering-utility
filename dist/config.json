@@ -45,24 +45,13 @@
             "progress": 0
         },
         {
-            "display_name": "Vishal's PC",
-            "name": "DESKTOP-OQ67Q0S",
-            "ip": "192.168.1.33",
-            "mac": "2C-F0-5D-D1-95-AB",
-            "username": "visha",
-            "password": "99918@Spic",
-            "status": "online",
-            "selected": false,
-            "progress": 0
-        },
-        {
             "display_name": "Render Node 1",
             "name": "DESKTOP-IUF3INH",
             "ip": "192.168.1.57",
             "mac": "D8-BB-C1-8A-81-EB",
             "username": "ikarus-3d",
             "password": "123456",
-            "status": "offline",
+            "status": "online",
             "selected": false,
             "progress": 0
         },
@@ -73,7 +62,7 @@
             "mac": "04-7C-16-42-A1-50",
             "username": "Admin",
             "password": "123456",
-            "status": "offline",
+            "status": "online",
             "selected": false,
             "progress": 0
         },
@@ -84,7 +73,7 @@
             "mac": "7C-10-C9-BE-66-E1",
             "username": "Ikarus",
             "password": "123456",
-            "status": "offline",
+            "status": "online",
             "selected": false,
             "progress": 0
         },
@@ -95,7 +84,7 @@
             "mac": "2C-F0-5D-77-91-C4",
             "username": "salman siddiqui",
             "password": "12345",
-            "status": "offline",
+            "status": "online",
             "selected": false
         }
     ]

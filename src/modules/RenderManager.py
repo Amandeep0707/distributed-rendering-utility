@@ -45,7 +45,7 @@ class RenderManager:
                 server_path = os.path.dirname(blender_file)
                 
                 # Map the drive
-                map_cmd = f'net use Y: "{server_path}" /user:{machine["username"]} {machine["password"]} /persistent:yes 2>&1'
+                map_cmd = f'net use Y: "{server_path}" /user:Admin 123456 /persistent:yes 2>&1'
                 stdin, stdout, stderr = client.exec_command(map_cmd)
                 output = stdout.read().decode() + stderr.read().decode()
                 
@@ -79,19 +79,12 @@ class RenderManager:
                                         if "/" in part and i > 0 and parts[i-1] == "Sample":
                                             current, total = map(int, part.split("/"))
                                             progress = int(current / total * 100)
-                                            machine["progress"] = progress
-                                            # Update UI on the main thread
-                                            # self.app.root.after(0, lambda: self.app.machine_list.update_list(self.app.machines))
+                                            self.app.machine_list.progress_bar.set(progress / 100)
                                         if "Fra" in part:
                                             machine["current_frame"] = part.strip("Fra:")
-                                            break
+                                            self.app.machine_list.status_label.configure(text=f"Rendering: {machine['current_frame']}")
                                 except Exception as e:
                                     self.log_manager.log(machine, f"Error parsing progress: {e}")
-                            
-                            if "error" or "wrong" in line.lower():
-                                self.log_manager.log(machine, f"Something's Wrong: {line.strip()}")
-                                machine["status"] = "error"
-                                # self.app.root.after(0, lambda: self.app.machine_list.update_list(self.app.machines))
                         
                         # Check for errors
                         error_output = stderr.read().decode()
