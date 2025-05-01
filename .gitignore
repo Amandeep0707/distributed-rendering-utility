@@ -1,6 +1,3 @@
-# Exclude distribution files
-*dist/
-
 # Exclude build files
 *build/
 
@@ -8,5 +5,8 @@
 *render_output/
 
 # Exclude Python cache files
-*distributed-render-utility.spec
+*__main__.spec
 *src/modules/__pycache__/
+
+# Exclude Local Python Environment
+*.venv
