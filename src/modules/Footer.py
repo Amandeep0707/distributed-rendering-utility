@@ -19,7 +19,8 @@ class Footer(ctk.CTkFrame):
         self.blender_label = ctk.CTkLabel(self.blender_frame, text="Browse File:")
         self.blender_label.pack(side="left", padx=10, pady=5)
 
-        self.blender_path_field = ctk.StringVar(value="\\\\RT-SHAREDSTORAG\VR-Warriors\Automated Rendering Test\Test.blend")
+        drive_path = self.app.drive_credentials.get("path")
+        self.blender_path_field = ctk.StringVar(value=f"{drive_path}\Automated Rendering Test\Test.blend")
         self.blender_path_entry = ctk.CTkEntry(self.blender_frame, textvariable=self.blender_path_field, width=300)
         self.blender_path_entry.pack(side="left", padx=(0, 5), pady=5, fill="x", expand="true")
 
@@ -52,6 +53,10 @@ class Footer(ctk.CTkFrame):
     def on_input_browse(self, callback):
         file_path = ctk.filedialog.askopenfilename(filetypes=[("Blender Files", "*.blend")])
         if file_path:
+            if file_path.startswith("Y:"):
+                drive_path = self.app.drive_credentials.get("path")
+                file_path = file_path.replace("Y:", drive_path)
+                file_path = file_path.replace("/", "\\")
             callback.set(file_path)
             self.blender_path_entry.configure(state="normal")
 

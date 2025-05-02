@@ -60,6 +60,7 @@ class MachineList(ctk.CTkFrame):
                     width=70,
                 )
                 self.status_label.pack(side="right", padx=5, pady=5)
+                machine["status_label"] = self.status_label
                 
                 # Add a progress indicator (You could use a determinate progress bar when you have actual progress data)
                 self.progress_bar = ctk.CTkProgressBar(machine_frame, width=100)
@@ -67,6 +68,7 @@ class MachineList(ctk.CTkFrame):
                 self.progress_bar.configure(mode="determinate", require_redraw=True)
                 progress_value = machine.get("progress", 0) / 100
                 self.progress_bar.set(progress_value)
+                machine["progress_bar"] = self.progress_bar
 
             self.status_indicator = ctk.CTkLabel(
                 machine_frame, 

@@ -286,7 +286,7 @@ class MachineManager:
                 self.log_manager.log(machine, "Machine did not respond within timeout period.")
                 machine["status"] = "offline"
 
-            self.app.config_manager.save_config(self.app.machines)
+            # self.app.config_manager.save_config(self.app.machines)
             self.app.root.after(0, lambda: self.app.machine_list.update_list(self.app.machines))
         
         except Exception as e:
@@ -320,7 +320,7 @@ class MachineManager:
 
             # Update the UI from the main thread
             self.app.root.after(0, lambda: self.app.machine_list.update_list(self.app.machines))
-            self.app.config_manager.save_config(self.app.machines)
+            # self.app.config_manager.save_config(self.app.machines)
         except Exception as e:
             print(f"Error in check_all_machines: {e}")
             # We're in a thread, so we need to use after to schedule UI updates

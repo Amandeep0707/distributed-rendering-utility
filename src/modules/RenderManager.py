@@ -34,18 +34,18 @@ class RenderManager:
                 blender_file = self.app.footer.blender_path_field.get()
                 output_path = self.app.footer.output_path_field.get()
                 render_args = self.app.footer.render_args_field.get()
+                drive_username = self.app.config_manager.drive_credentials.get("username")
+                drive_password = self.app.config_manager.drive_credentials.get("password")
+                drive_path = self.app.config_manager.drive_credentials.get("path")
 
                 if not blender_file:
                     self.log_manager.log(machine, "Error: No Blender file selected.")
                     return
                 
                 self.log_manager.log(machine, "Mapping network drive for Blender file...")
-
-                # Get the server path without the filename
-                server_path = os.path.dirname(blender_file)
                 
                 # Map the drive
-                map_cmd = f'net use Y: "{server_path}" /user:Admin 123456 /persistent:yes 2>&1'
+                map_cmd = f'net use Y: /delete /y & net use Y: "{drive_path}" /user:{drive_username} {drive_password} /persistent:yes 2>&1'
                 stdin, stdout, stderr = client.exec_command(map_cmd)
                 output = stdout.read().decode() + stderr.read().decode()
                 
@@ -53,16 +53,13 @@ class RenderManager:
                     self.log_manager.log(machine, "Network drive mapped or already available.")
                 else:
                     self.log_manager.log(machine, f"Drive mapping output: {output}")
-                
-                # Update file path to use mapped drive
-                local_file_path = blender_file
 
                 # Create the render command
                 # Adjust this command based on your specific requirements
                 # This example assumes blender is in the PATH
-                render_cmd = f'blender -b "{local_file_path}" -o "{output_path}" {render_args}'
+                render_cmd = f'blender -b "{blender_file}" -o "{output_path}" {render_args}'
                 
-                self.log_manager.log(machine, f"Executing render command: {render_cmd}")
+                self.log_manager.log(machine, "Starting Render...")
                 machine["status"] = "rendering"
                 machine["progress"] = 0
 
@@ -72,6 +69,7 @@ class RenderManager:
                         
                         # Monitor the output
                         for line in stdout:
+                            # self.log_manager.log(machine, line.strip())
                             if "Sample" in line:
                                 try:
                                     parts = line.split()
@@ -79,12 +77,17 @@ class RenderManager:
                                         if "/" in part and i > 0 and parts[i-1] == "Sample":
                                             current, total = map(int, part.split("/"))
                                             progress = int(current / total * 100)
-                                            self.app.machine_list.progress_bar.set(progress / 100)
+                                            machine.get("progress_bar").set(progress)
                                         if "Fra" in part:
-                                            machine["current_frame"] = part.strip("Fra:")
-                                            self.app.machine_list.status_label.configure(text=f"Rendering: {machine['current_frame']}")
+                                            current_frame = part.strip("Fra:")
+                                            machine.get("status_label").configure(text=f"Rendering: {current_frame}")
+
                                 except Exception as e:
                                     self.log_manager.log(machine, f"Error parsing progress: {e}")
+
+                            elif "cannot read" in line.lower():
+                                machine["status"] = "error"
+                                self.log_manager.log(machine, "Error: Cannot Read File. Drive Mount Error")
                         
                         # Check for errors
                         error_output = stderr.read().decode()
@@ -108,15 +111,19 @@ class RenderManager:
                 # Update UI
                 self.app.root.after(0, lambda: self.app.machine_list.update_list(self.app.machines))
             
-            except paramiko.AuthenticationException:
-                self.log_manager.log(machine, "Authentication failed. Check username and password.")
+            except paramiko.AuthenticationException as e:
+                self.log_manager.log(machine, f"Authentication Error: {e}")
+                machine["status"] = "error"
             except paramiko.SSHException as e:
                 self.log_manager.log(machine, f"SSH error: {e}")
+                machine["status"] = "error"
             except Exception as e:
                 self.log_manager.log(machine, f"Connection error: {e}")
+                machine["status"] = "error"
         
         except Exception as e:
             self.log_manager.log(machine, f"Error starting render: {e}")
+            machine["status"] = "error"
 
     def stop_render(self, machine):
         """

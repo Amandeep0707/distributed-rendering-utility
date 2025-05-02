@@ -1,103 +1,89 @@
 {
+    "drive_credentials": {
+        "username": "Admin",
+        "password": "123456",
+        "path": "\\\\RT-SHAREDSTORAG\\VR-Warriors"
+    },
     "machines": [
         {
             "display_name": "Local Storage PC",
             "name": "RT-SHAREDSTORAGE-PC",
-            "ip": "192.168.1.87",
+            "ip": "192.168.1.76",
             "mac": "04-7C-16-E4-D9-57",
             "username": "Admin",
             "password": "123456",
-            "status": "online",
-            "selected": true,
-            "index": 0
+            "status": "offline",
+            "selected": false
         },
         {
             "display_name": "Arya's PC",
             "name": "Bond-007",
-            "ip": "192.168.1.6",
+            "ip": "192.168.1.77",
             "mac": "D8-BB-C1-40-DA-E6",
             "username": "Admin",
             "password": "123456",
-            "status": "online",
-            "selected": false,
-            "index": 1
+            "status": "offline",
+            "selected": false
         },
         {
             "display_name": "Ajit's PC",
             "name": "CQ-08",
-            "ip": "192.168.1.20",
+            "ip": "192.168.1.78",
             "mac": "D8-BB-C1-3D-64-92",
             "username": "Admin",
             "password": "12345",
-            "status": "online",
-            "selected": false,
-            "index": 2
+            "status": "offline",
+            "selected": false
         },
         {
             "display_name": "Aman's PC",
             "name": "PC-5",
-            "ip": "192.168.1.67",
+            "ip": "192.168.1.82",
             "mac": "D8-BB-C1-39-8D-B0",
             "username": "Admin",
             "password": "1231",
             "status": "offline",
-            "selected": false,
-            "index": 3
-        },
-        {
-            "display_name": "Vishal's PC",
-            "name": "DESKTOP-OQ67Q0S",
-            "ip": "192.168.1.33",
-            "mac": "2C-F0-5D-D1-95-AB",
-            "username": "visha",
-            "password": "99918@Spic",
-            "status": "online",
-            "selected": false,
-            "index": 4
+            "selected": false
         },
         {
             "display_name": "Render Node 1",
             "name": "DESKTOP-IUF3INH",
-            "ip": "192.168.1.57",
+            "ip": "192.168.1.75",
             "mac": "D8-BB-C1-8A-81-EB",
             "username": "ikarus-3d",
             "password": "123456",
-            "status": "online",
-            "selected": false,
-            "index": 5
+            "status": "offline",
+            "selected": false
         },
         {
             "display_name": "Render Node 2",
             "name": "CQ-05",
-            "ip": "192.168.1.77",
+            "ip": "192.168.1.79",
             "mac": "04-7C-16-42-A1-50",
             "username": "Admin",
             "password": "123456",
-            "status": "online",
-            "selected": false,
-            "index": 6
+            "status": "offline",
+            "selected": false
         },
         {
             "display_name": "Render Node 3",
             "name": "DESKTOP-KQRPJPE",
-            "ip": "192.168.1.79",
+            "ip": "192.168.1.80",
             "mac": "7C-10-C9-BE-66-E1",
             "username": "Ikarus",
             "password": "123456",
-            "status": "online",
-            "selected": false,
-            "index": 7
+            "status": "offline",
+            "selected": false
         },
         {
             "display_name": "Render Node 4",
             "name": "DESKTOP-5N25HUP",
-            "ip": "192.168.1.34",
+            "ip": "192.168.1.81",
             "mac": "2C-F0-5D-77-91-C4",
             "username": "salman siddiqui",
             "password": "12345",
-            "status": "online",
-            "selected": false,
-            "index": 8
+            "status": "offline",
+            "selected": false
         }
     ]
 }

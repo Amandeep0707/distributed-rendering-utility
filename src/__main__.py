@@ -21,7 +21,8 @@ class App:
 
         # Load configuration
         self.config_manager = ConfigManager("config.json")
-        self.machines = self.config_manager.load_config()
+        self.machines = self.config_manager.machines
+        self.drive_credentials = self.config_manager.drive_credentials
 
         # Create Main frame
         self.main_frame = ctk.CTkFrame(root, fg_color="transparent")
