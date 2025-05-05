@@ -4,10 +4,10 @@ class NodeDetails(ctk.CTkFrame):
     def __init__(self, app, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.app = app
-        self.master_frame = master
         self.frame = ctk.CTkFrame(master)
-        self.frame.pack(padx=5, pady=(5, 0), anchor="n", fill="x")
+        self.frame.pack(padx=5, pady=5, anchor="n", fill="x")
         self.main_activity_frame = None
+        self.details_frame = None
 
         self.initialize_details()
 
@@ -20,16 +20,23 @@ class NodeDetails(ctk.CTkFrame):
         if self.main_activity_frame:
             for widget in self.main_activity_frame.winfo_children():
                 widget.destroy()
+        if self.details_frame:
+            for widget in self.details_frame.winfo_children():
+                widget.destroy()
 
-        self.node_info_frame = ctk.CTkFrame(self.frame, fg_color="transparent")
+        if not self.details_frame:
+            self.details_frame = ctk.CTkFrame(self.frame, fg_color="transparent", border_width=0)
+            self.details_frame.pack(anchor="n", side="top", fill="x")
+
+        self.node_info_frame = ctk.CTkFrame(self.details_frame, fg_color="transparent", border_width=0)
         self.node_info_frame.pack(anchor="w", side="left", expand=True)
 
-        self.edit_node_frame = ctk.CTkFrame(self.frame, fg_color="transparent")
+        self.edit_node_frame = ctk.CTkFrame(self.details_frame, fg_color="transparent", border_width=0)
         self.edit_node_frame.pack(anchor="e", side="right", expand=True)
 
         if not self.main_activity_frame:
-            self.main_activity_frame = ctk.CTkFrame(self.master_frame)
-        self.main_activity_frame.pack(padx=5, pady=5, anchor="n", side="top", fill="x")
+            self.main_activity_frame = ctk.CTkFrame(self.frame, fg_color="transparent", border_width=0)
+            self.main_activity_frame.pack(anchor="s", side="bottom", fill="x")
 
         self.wake_button = ctk.CTkButton(self.main_activity_frame, text="Wake Node", command=lambda: self.app.node_manager.wake_node(self.app.active_node))
         self.wake_button.pack(anchor="w", side="left", padx=(5, 0), pady=5)
@@ -37,9 +44,9 @@ class NodeDetails(ctk.CTkFrame):
 
         self.start_render_button = ctk.CTkButton(self.main_activity_frame, text="Start Render", command=lambda: self.app.render_manager.start_render(self.app.active_node))
         self.start_render_button.pack(anchor="w", side="left", padx=(5, 0), pady=5)
-        self.start_render_button.configure(state="disabled", fg_color="#37da6d")
+        self.start_render_button.configure(state="disabled")
 
-        self.stop_render_button = ctk.CTkButton(self.main_activity_frame, text="Stop Render", fg_color="#8c031e", command=lambda: self.app.render_manager.stop_render(self.app.active_node))
+        self.stop_render_button = ctk.CTkButton(self.main_activity_frame, text="Stop Render", command=lambda: self.app.render_manager.stop_render(self.app.active_node))
         self.stop_render_button.pack(anchor="w", side="left", padx=(5, 0), pady=5)
         self.stop_render_button.configure(state="disabled")
 
@@ -55,7 +62,7 @@ class NodeDetails(ctk.CTkFrame):
         self.edit_node_button.pack(anchor="e", side="top", padx=(0, 5), pady=5)
         self.edit_node_button.configure(state="disabled")
 
-        self.remove_node_button = ctk.CTkButton(self.edit_node_frame, text="Remove Node", fg_color="#8c031e", command=lambda: self.app.node_manager.remove_node(self.app.active_node))
+        self.remove_node_button = ctk.CTkButton(self.edit_node_frame, text="Remove Node", command=lambda: self.app.node_manager.remove_node(self.app.active_node))
         self.remove_node_button.pack(anchor="e", side="bottom", padx=(0, 5), pady=5)
         self.remove_node_button.configure(state="disabled")
 
@@ -68,7 +75,7 @@ class NodeDetails(ctk.CTkFrame):
         node["selected"] = True
         self.app.active_node = node
 
-        self.node_name.set(node["name"])
+        self.node_name.set(node["display_name"])
         self.node_details.set(self.prepare_node_info(node["name"], node["status"], node["ip"]))
 
         # Enable buttons

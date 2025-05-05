@@ -4,7 +4,7 @@ class Header(ctk.CTkFrame):
     def __init__(self, app, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.app = app
-        self.frame = ctk.CTkFrame(master)
+        self.frame = ctk.CTkFrame(master, border_width=0, corner_radius=0)
         self.frame.pack(padx=5, pady=(5, 0), anchor="n", fill="x")
 
         # Add Header title

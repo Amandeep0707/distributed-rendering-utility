@@ -4,7 +4,7 @@ class NodeList(ctk.CTkFrame):
     def __init__(self, app, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.app = app
-        self.frame = ctk.CTkFrame(master)
+        self.frame = ctk.CTkFrame(master, border_width=0, corner_radius=0)
         self.frame.pack(padx=(5, 0), pady=5, anchor="w", side="left", fill="y")
 
         # Add Node List title
@@ -12,7 +12,7 @@ class NodeList(ctk.CTkFrame):
         self.title_label.pack(anchor="w", side="top", pady=5, padx=(10, 5))
 
         # Add Node Listbox
-        self.node_list_frame = ctk.CTkScrollableFrame(self.frame, fg_color="transparent", width=450)
+        self.node_list_frame = ctk.CTkScrollableFrame(self.frame, fg_color="transparent", width=450, border_width=0)
         self.node_list_frame.pack(fill="both", expand=True)
 
         self.update_list(app.nodes)
@@ -30,7 +30,7 @@ class NodeList(ctk.CTkFrame):
         self.node_buttons = []
         for i, node in enumerate(nodes):
             node_frame = ctk.CTkFrame(self.node_list_frame)
-            node_frame.pack(fill="x", padx=5, pady=2)
+            node_frame.pack(fill="x", padx=0, pady=5)
 
             # Determine status indicator color
             status_color = "#3a3a3a"  # Default gray for unknown
@@ -66,8 +66,7 @@ class NodeList(ctk.CTkFrame):
                 self.progress_bar = ctk.CTkProgressBar(node_frame, width=100)
                 self.progress_bar.pack(side="right", padx=5, pady=5)
                 self.progress_bar.configure(mode="determinate", require_redraw=True)
-                progress_value = node.get("progress", 0) / 100
-                self.progress_bar.set(progress_value)
+                self.progress_bar.set(0)
                 node["progress_bar"] = self.progress_bar
 
             self.status_indicator = ctk.CTkLabel(
@@ -78,13 +77,12 @@ class NodeList(ctk.CTkFrame):
                 fg_color=status_color,
                 corner_radius=20
             )
-            self.status_indicator.pack(side="left", padx=5, pady=5)
+            self.status_indicator.pack(side="left", padx=(10,5), pady=5)
 
             node_button = ctk.CTkButton(
                 node_frame,
                 text=node.get("display_name", f"Node {i+1}"),
-                fg_color="transparent",
-                hover_color="#505050",
+                fg_color="grey25",
                 anchor="w",
                 command=lambda m=node: self.app.node_details.on_node_select(m)
             )

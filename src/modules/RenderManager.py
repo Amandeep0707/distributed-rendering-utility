@@ -7,6 +7,7 @@ class RenderManager:
         self.app = app
         self.log_manager = app.log_manager
         self.ssh_clients = {} # Store SSH clients for each node
+        self.suppress_render_errors = True
 
     def start_render(self, node):
         """
@@ -42,7 +43,7 @@ class RenderManager:
                     self.log_manager.log(node, "Error: No Blender file selected.")
                     return
                 
-                self.log_manager.log(node, "Mapping network drive for Blender file...")
+                self.log_manager.log(node, "Mapping network drive for Blender file...", False)
                 
                 # Map the drive
                 map_cmd = f'net use Y: /delete /y & net use Y: "{drive_path}" /user:{drive_username} {drive_password} /persistent:yes 2>&1'
@@ -50,9 +51,9 @@ class RenderManager:
                 output = stdout.read().decode() + stderr.read().decode()
                 
                 if "Drive already mapped" in output or "command completed successfully" in output.lower():
-                    self.log_manager.log(node, "Network drive mapped or already available.")
+                    self.log_manager.log(node, "Network drive mapped or already available.", False)
                 else:
-                    self.log_manager.log(node, f"Drive mapping output: {output}")
+                    self.log_manager.log(node, f"Drive mapping output: {output}", False)
 
                 # Create the render command
                 # Adjust this command based on your specific requirements
@@ -73,26 +74,32 @@ class RenderManager:
                             if "Sample" in line:
                                 try:
                                     parts = line.split()
+                                    if not self.suppress_render_errors:
+                                        self.log_manager.log(node, parts)
                                     for i, part in enumerate(parts):
                                         if "/" in part and i > 0 and parts[i-1] == "Sample":
                                             current, total = map(int, part.split("/"))
-                                            progress = int(current / total * 100)
+                                            progress = current / total
                                             node.get("progress_bar").set(progress)
                                         if "Fra" in part:
                                             current_frame = part.strip("Fra:")
                                             node.get("status_label").configure(text=f"Rendering: {current_frame}")
 
                                 except Exception as e:
-                                    self.log_manager.log(node, f"Error parsing progress: {e}")
+                                    self.log_manager.log(node, f"Error parsing progress: {e}", False)
 
                             elif "cannot read" in line.lower():
                                 node["status"] = "error"
-                                self.log_manager.log(node, "Error: Cannot Read File. Drive Mount Error")
+                                self.log_manager.log(node, "Error: Cannot Read File. Drive Mount Error", False)
                         
                         # Check for errors
                         error_output = stderr.read().decode()
                         if error_output:
-                            self.log_manager.log(node, f"Render errors: {error_output}")
+                            if self.suppress_render_errors:
+                                self.log_manager.log(node, f"Render errors: There were some errors/warnings. They were supressed.")
+                            else:
+                                self.log_manager.log(node, f"Render errors: {error_output}")
+                            
                         
                         # Mark as complete
                         node["status"] = "online"

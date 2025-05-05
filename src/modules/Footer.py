@@ -4,16 +4,16 @@ class Footer(ctk.CTkFrame):
     def __init__(self, app, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.app = app
-        self.frame = ctk.CTkFrame(master)
+        self.frame = ctk.CTkFrame(master, border_width=0)
         self.frame.pack(padx=5, pady=(0, 5), anchor="s", fill="x")
 
-        self.blender_frame = ctk.CTkFrame(self.frame, fg_color="transparent")
+        self.blender_frame = ctk.CTkFrame(self.frame, fg_color="transparent", border_width=0)
         self.blender_frame.pack(fill="x", expand=True)
 
-        self.output_path_frame = ctk.CTkFrame(self.frame, fg_color="transparent")
+        self.output_path_frame = ctk.CTkFrame(self.frame, fg_color="transparent", border_width=0)
         self.output_path_frame.pack(fill="x", expand=True)
 
-        self.render_args_frame = ctk.CTkFrame(self.frame, fg_color="transparent")
+        self.render_args_frame = ctk.CTkFrame(self.frame, fg_color="transparent", border_width=0)
         self.render_args_frame.pack(fill="x", expand=True)
 
         self.blender_label = ctk.CTkLabel(self.blender_frame, text="Browse File:")
@@ -47,7 +47,7 @@ class Footer(ctk.CTkFrame):
         self.render_options_button = ctk.CTkButton(self.render_args_frame, text="Render Options", command=lambda: self.on_render_options())
         self.render_options_button.pack(side="left", padx=(0, 5), pady=5)
 
-        self.render_all_button = ctk.CTkButton(self.frame, height=40, font=ctk.CTkFont(size=15, weight="bold"), text="Render(All Available Nodes)", command=lambda: self.app.render_manager.render_all())
+        self.render_all_button = ctk.CTkButton(self.frame, height=40, font=ctk.CTkFont(size=15, weight="bold"), text="Render(All Available Nodes)", command=lambda: self.app.render_manager.render_all(), border_width=0)
         self.render_all_button.pack(fill="x", padx=5, pady=5)
 
     def on_input_browse(self, callback):
@@ -99,7 +99,17 @@ class Footer(ctk.CTkFrame):
         self.output_format_var = ctk.StringVar(value="PNG")
         ctk.CTkOptionMenu(dialog, variable=self.output_format_var, values=["JPEG", "PNG", "Webp"], command=lambda x: self.output_format_var.set(x)).grid(row=4, column=1, padx=10, pady=5, sticky="e")
 
-        buttons_frame = ctk.CTkFrame(dialog, fg_color="transparent")
+        def checkbox_event():
+            if check_var.get() == "on":
+                self.app.render_manager.suppress_render_errors = True
+            else:
+                self.app.render_manager.suppress_render_errors = False
+
+        ctk.CTkLabel(dialog, text="Suppress Render Logs").grid(row=5, column=0, padx=10, pady=5, sticky="w")
+        check_var = ctk.StringVar(value="on")
+        ctk.CTkCheckBox(dialog, text=None, variable=check_var, onvalue="on", offvalue="off", command=checkbox_event).grid(row=5, column=1, padx=10, pady=5, sticky="w")
+
+        buttons_frame = ctk.CTkFrame(dialog, fg_color="transparent", border_width=0)
         buttons_frame.grid(row=6, column=0, columnspan=2, pady=10)
 
         def generate_command():

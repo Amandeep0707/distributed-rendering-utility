@@ -51,7 +51,7 @@ class NodeManager:
         password_entry.grid(row=5, column=1, padx=10, pady=5)
         
         # Buttons frame
-        self.buttons_frame = ctk.CTkFrame(self.dialog, fg_color="transparent")
+        self.buttons_frame = ctk.CTkFrame(self.dialog, fg_color="transparent", border_width=0)
         self.buttons_frame.grid(row=6, column=0, columnspan=2, pady=10)
 
         def validate_and_save(self):
@@ -154,7 +154,7 @@ class NodeManager:
         password_entry.grid(row=5, column=1, padx=10, pady=5)
         
         # Buttons frame
-        self.buttons_frame = ctk.CTkFrame(self.dialog, fg_color="transparent")
+        self.buttons_frame = ctk.CTkFrame(self.dialog, fg_color="transparent", border_width=0)
         self.buttons_frame.grid(row=6, column=0, columnspan=2, pady=10)
 
         def validate_and_save(self):
@@ -286,7 +286,6 @@ class NodeManager:
                 self.log_manager.log(node, "Node did not respond within timeout period.")
                 node["status"] = "offline"
 
-            # self.app.config_manager.save_config(self.app.nodes)
             self.app.root.after(0, lambda: self.app.node_list.update_list(self.app.nodes))
         
         except Exception as e:
@@ -320,7 +319,7 @@ class NodeManager:
 
             # Update the UI from the main thread
             self.app.root.after(0, lambda: self.app.node_list.update_list(self.app.nodes))
-            # self.app.config_manager.save_config(self.app.nodes)
+
         except Exception as e:
             print(f"Error in check_all_nodes: {e}")
             # We're in a thread, so we need to use after to schedule UI updates

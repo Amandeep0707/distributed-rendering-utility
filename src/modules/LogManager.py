@@ -17,13 +17,13 @@ class LogManager:
             self.change_log_display(node)
 
     def change_log_display(self, node):
-        self.node_id = node["name"]
 
         self.app.render_log.log_text.configure(state="normal")
         self.app.render_log.log_text.delete("1.0", "end")
 
-        if self.node_id in self.app.render_logs:
-            self.app.render_log.log_text.insert("1.0", self.app.render_logs[self.node_id])
+        if node["name"] in self.app.render_logs:
+            self.app.render_log.log_text.insert("1.0", self.app.render_logs[node["name"]])
+            self.app.render_log.update_title()
         else:
             self.app.render_log.log_text.insert("1.0", "No logs available for this node.")
 
