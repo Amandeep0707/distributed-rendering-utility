@@ -73,10 +73,10 @@ class MachineList(ctk.CTkFrame):
             self.status_indicator = ctk.CTkLabel(
                 machine_frame, 
                 text="",
-                width=10,
+                width=16,
                 height=10,
                 fg_color=status_color,
-                corner_radius=5
+                corner_radius=20
             )
             self.status_indicator.pack(side="left", padx=5, pady=5)
 

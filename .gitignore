@@ -2,7 +2,7 @@
 *build/
 
 # Exclude temp Render Files
-*render_output/
+*Output/
 
 # Exclude Python cache files
 *__main__.spec

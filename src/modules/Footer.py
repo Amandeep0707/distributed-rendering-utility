@@ -30,7 +30,7 @@ class Footer(ctk.CTkFrame):
         self.output_path_label = ctk.CTkLabel(self.output_path_frame, text="Output Path:")
         self.output_path_label.pack(side="left", padx=10, pady=5)
 
-        self.output_path_field = ctk.StringVar(value="//render_output/output_##")
+        self.output_path_field = ctk.StringVar(value="//Output/Frame ###")
         self.output_path_entry = ctk.CTkEntry(self.output_path_frame, textvariable=self.output_path_field, width=300)
         self.output_path_entry.pack(side="left", padx=(0, 5), pady=5, fill="x", expand="true")
 
