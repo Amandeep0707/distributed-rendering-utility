@@ -9,7 +9,7 @@ class ConfigManager:
         self.config_file = config_file
         self.config = {}
 
-        self.machines = []
+        self.nodes = []
         self.drive_credentials = {}
 
         self.load_config()
@@ -21,7 +21,7 @@ class ConfigManager:
         try:
             with open(self.config_file, 'r') as file:
                 self.config = json.load(file)
-                self.machines = self.config.get("machines", [])
+                self.nodes = self.config.get("nodes", [])
                 self.drive_credentials = self.config.get("drive_credentials", {})
         except FileNotFoundError:
             print(f"Configuration file {self.config_file} not found.")
@@ -37,7 +37,7 @@ class ConfigManager:
                 json.dump(
                     {
                         "drive_credentials": self.drive_credentials,
-                        "machines": obj
+                        "nodes": obj
                     },
                     file, indent=4
                     )

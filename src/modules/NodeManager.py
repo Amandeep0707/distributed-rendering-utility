@@ -5,15 +5,15 @@ import socket
 import customtkinter as ctk
 from tkinter import messagebox
 
-class MachineManager:
+class NodeManager:
     def __init__(self, app):
         self.app = app
         self.log_manager = app.log_manager
-        threading.Thread(target=self.check_all_machines, args=(), daemon=True).start()
+        threading.Thread(target=self.check_all_nodes, args=(), daemon=True).start()
 
-    def add_machine(self):
+    def add_node(self):
         self.dialog = ctk.CTkToplevel(self.app.root)
-        self.dialog.title("Add Machine")
+        self.dialog.title("Add Node")
         self.dialog.resizable(False, False)
         self.dialog.grab_set()
 
@@ -77,8 +77,8 @@ class MachineManager:
                 messagebox.showerror("Error", "Invalid IP address format.", parent=self.dialog)
                 return
             
-            # Add the machine
-            new_machine = {
+            # Add the node
+            new_node = {
                 "display_name": self.display_name,
                 "name": self.name,
                 "ip": self.ip,
@@ -89,10 +89,10 @@ class MachineManager:
                 "selected": False,
             }
 
-            self.app.machines.append(new_machine)
-            self.app.config_manager.save_config(self.app.machines)
-            self.app.machine_list.update_list(self.app.machines)
-            self.app.machine_details.on_machine_select(new_machine)
+            self.app.nodes.append(new_node)
+            self.app.config_manager.save_config(self.app.nodes)
+            self.app.node_list.update_list(self.app.nodes)
+            self.app.node_details.on_node_select(new_node)
             
             self.dialog.destroy()
 
@@ -108,15 +108,15 @@ class MachineManager:
             command=self.dialog.destroy
         ).pack(side="left", padx=10)
 
-    def edit_machine(self, machine):
-        if not machine:
-            messagebox.showerror("Error", "No machine selected.", parent=self.app.root)
+    def edit_node(self, node):
+        if not node:
+            messagebox.showerror("Error", "No node selected.", parent=self.app.root)
             return
         
-        machine_index = self.app.machines.index(machine)
+        node_index = self.app.nodes.index(node)
 
         self.dialog = ctk.CTkToplevel(self.app.root)
-        self.dialog.title("Add Machine")
+        self.dialog.title("Add Node")
         self.dialog.resizable(False, False)
         self.dialog.grab_set()
 
@@ -129,27 +129,27 @@ class MachineManager:
 
         # Form fields
         ctk.CTkLabel(self.dialog, text="Display Name:").grid(row=0, column=0, padx=10, pady=5)
-        self.display_name_var = ctk.StringVar(value=machine.get("display_name", ""))
+        self.display_name_var = ctk.StringVar(value=node.get("display_name", ""))
         ctk.CTkEntry(self.dialog, textvariable=self.display_name_var, width=250).grid(row=0, column=1, padx=10, pady=5)
 
         ctk.CTkLabel(self.dialog, text="Client Name:").grid(row=1, column=0, padx=10, pady=5)
-        self.name_var = ctk.StringVar(value=machine.get("name", ""))
+        self.name_var = ctk.StringVar(value=node.get("name", ""))
         ctk.CTkEntry(self.dialog, textvariable=self.name_var, width=250).grid(row=1, column=1, padx=10, pady=5)
         
         ctk.CTkLabel(self.dialog, text="IP Address:").grid(row=2, column=0, padx=10, pady=5)
-        self.ip_var = ctk.StringVar(value=machine.get("ip", ""))
+        self.ip_var = ctk.StringVar(value=node.get("ip", ""))
         ctk.CTkEntry(self.dialog, textvariable=self.ip_var, width=250).grid(row=2, column=1, padx=10, pady=5)
         
         ctk.CTkLabel(self.dialog, text="MAC Address:").grid(row=3, column=0, padx=10, pady=5)
-        self.mac_var = ctk.StringVar(value=machine.get("mac", ""))
+        self.mac_var = ctk.StringVar(value=node.get("mac", ""))
         ctk.CTkEntry(self.dialog, textvariable=self.mac_var, width=250).grid(row=3, column=1, padx=10, pady=5)
         
         ctk.CTkLabel(self.dialog, text="SSH Username:").grid(row=4, column=0, padx=10, pady=5)
-        self.username_var = ctk.StringVar(value=machine.get("username", ""))
+        self.username_var = ctk.StringVar(value=node.get("username", ""))
         ctk.CTkEntry(self.dialog, textvariable=self.username_var, width=250).grid(row=4, column=1, padx=10, pady=5)
         
         ctk.CTkLabel(self.dialog, text="SSH Password:").grid(row=5, column=0, padx=10, pady=5)
-        self.password_var = ctk.StringVar(value=machine.get("password", ""))
+        self.password_var = ctk.StringVar(value=node.get("password", ""))
         password_entry = ctk.CTkEntry(self.dialog, textvariable=self.password_var, width=250, show="*")
         password_entry.grid(row=5, column=1, padx=10, pady=5)
         
@@ -180,21 +180,21 @@ class MachineManager:
                 messagebox.showerror("Error", "Invalid IP address format.", parent=self.dialog)
                 return
             
-            # Update the machine
-            self.updated_machine = {
+            # Update the node
+            self.updated_node = {
                 "display_name": self.display_name,
                 "name": self.name,
                 "ip": self.ip,
                 "mac": self.mac,
                 "username": self.username,
                 "password": self.password,
-                "status": machine.get("status", "offline"),
+                "status": node.get("status", "offline"),
                 "selected": True
             }
 
-            self.app.machines[machine_index] = self.updated_machine
-            self.app.config_manager.save_config(self.app.machines)
-            self.app.machine_list.update_list(self.app.machines)
+            self.app.nodes[node_index] = self.updated_node
+            self.app.config_manager.save_config(self.app.nodes)
+            self.app.node_list.update_list(self.app.nodes)
             self.dialog.destroy()
 
         ctk.CTkButton(
@@ -209,34 +209,34 @@ class MachineManager:
             command=self.dialog.destroy
         ).pack(side="left", padx=10)
 
-    def remove_machine(self, machine):
-        if not machine:
-            messagebox.showerror("Error", "No machine selected.", parent=self.app.root)
+    def remove_node(self, node):
+        if not node:
+            messagebox.showerror("Error", "No node selected.", parent=self.app.root)
             return
         
-        if messagebox.askyesno("Confirm", "Are you sure you want to remove this machine?", parent=self.app.root):
+        if messagebox.askyesno("Confirm", "Are you sure you want to remove this node?", parent=self.app.root):
             
-            self.app.machines.remove(machine)
-            self.app.config_manager.save_config(self.app.machines)
-            self.app.machine_list.update_list(self.app.machines)
-            self.app.machine_details.initialize_details()
+            self.app.nodes.remove(node)
+            self.app.config_manager.save_config(self.app.nodes)
+            self.app.node_list.update_list(self.app.nodes)
+            self.app.node_details.initialize_details()
 
-    def wake_machine(self, machine):
-        if not machine:
-            messagebox.showerror("Error", "No machine selected.", parent=self.app.root)
+    def wake_node(self, node):
+        if not node:
+            messagebox.showerror("Error", "No node selected.", parent=self.app.root)
             return
         
-        if machine.get("status") == "online":
-            messagebox.showinfo("Info", "Machine is already online.", parent=self.app.root)
+        if node.get("status") == "online":
+            messagebox.showinfo("Info", "Node is already online.", parent=self.app.root)
             return
         
-        threading.Thread(target=self.wake, args=(machine,), daemon=True).start()
+        threading.Thread(target=self.wake, args=(node,), daemon=True).start()
 
-    def wake(self, machine):
+    def wake(self, node):
         try:
-            self.log_manager.log(machine, "Trying to Wakeup up machine...")
+            self.log_manager.log(node, "Trying to Wakeup up node...")
 
-            mac = machine.get("mac").replace(":", "").replace("-", "").upper()
+            mac = node.get("mac").replace(":", "").replace("-", "").upper()
             if len(mac) != 12:
                 raise ValueError("Invalid MAC address format.")
             
@@ -249,13 +249,13 @@ class MachineManager:
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             sock.sendto(magic_packet, broadcast_address)
             sock.close()
-            self.log_manager.log(machine, "Magic packet sent successfully.")
-            self.log_manager.log(machine, "Waiting for machine to boot up...")
+            self.log_manager.log(node, "Magic packet sent successfully.")
+            self.log_manager.log(node, "Waiting for node to boot up...")
 
             def check_online():
                 for _ in range(30):
                     try:
-                        with socket.create_connection((machine.get("ip"), 22), timeout=2):
+                        with socket.create_connection((node.get("ip"), 22), timeout=2):
                             return True
                     except (socket.timeout, ConnectionRefusedError, OSError):
                         time.sleep(2)
@@ -266,62 +266,62 @@ class MachineManager:
                     try:
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         sock.settimeout(2)  # Short timeout
-                        result = sock.connect_ex((machine.get("ip"), 22))
+                        result = sock.connect_ex((node.get("ip"), 22))
                         sock.close()
                         
                         if result == 0:
                             return True
                         
-                        self.log_manager.log(machine, f"Waiting for machine to respond... ({attempt+1}/{30})")
+                        self.log_manager.log(node, f"Waiting for node to respond... ({attempt+1}/{30})")
                         time.sleep(2)
                     except Exception as e:
-                        self.log_manager.log(machine, f"Connection attempt failed: {e}")
+                        self.log_manager.log(node, f"Connection attempt failed: {e}")
                         time.sleep(2)
                 return False
                     
             if check_online():
-                self.log_manager.log(machine, "Machine is now online.")
-                machine["status"] = "online"
+                self.log_manager.log(node, "Node is now online.")
+                node["status"] = "online"
             else:
-                self.log_manager.log(machine, "Machine did not respond within timeout period.")
-                machine["status"] = "offline"
+                self.log_manager.log(node, "Node did not respond within timeout period.")
+                node["status"] = "offline"
 
-            # self.app.config_manager.save_config(self.app.machines)
-            self.app.root.after(0, lambda: self.app.machine_list.update_list(self.app.machines))
+            # self.app.config_manager.save_config(self.app.nodes)
+            self.app.root.after(0, lambda: self.app.node_list.update_list(self.app.nodes))
         
         except Exception as e:
-            self.log_manager.log(machine, f"Error waking machine: {str(e)}")
+            self.log_manager.log(node, f"Error waking node: {str(e)}")
 
-    def check_all_machines(self):
+    def check_all_nodes(self):
         """
-        Check the status of all machines in the list.
+        Check the status of all nodes in the list.
         This is run in a separate thread to avoid blocking the main thread.
         """
         try:
-            for machine in self.app.machines:
+            for node in self.app.nodes:
                 try:
                     # Create a socket and set a shorter timeout
                     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     sock.settimeout(1)  # 1 second timeout
                     
-                    result = sock.connect_ex((machine.get("ip"), 22))
+                    result = sock.connect_ex((node.get("ip"), 22))
                     sock.close()
                     
                     # If result is 0, connection was successful
                     if result == 0:
-                        machine["status"] = "online"
-                        self.log_manager.log(machine, f"Machine status: online", False)
+                        node["status"] = "online"
+                        self.log_manager.log(node, f"Node status: online", False)
                     else:
-                        machine["status"] = "offline"
-                        self.log_manager.log(machine, f"Machine status: offline (connection failed)", False)
+                        node["status"] = "offline"
+                        self.log_manager.log(node, f"Node status: offline (connection failed)", False)
                 except Exception as e:
-                    machine["status"] = "unknown"
-                    self.log_manager.log(machine, f"Error checking machine status: {str(e)}", False)
+                    node["status"] = "unknown"
+                    self.log_manager.log(node, f"Error checking node status: {str(e)}", False)
 
             # Update the UI from the main thread
-            self.app.root.after(0, lambda: self.app.machine_list.update_list(self.app.machines))
-            # self.app.config_manager.save_config(self.app.machines)
+            self.app.root.after(0, lambda: self.app.node_list.update_list(self.app.nodes))
+            # self.app.config_manager.save_config(self.app.nodes)
         except Exception as e:
-            print(f"Error in check_all_machines: {e}")
+            print(f"Error in check_all_nodes: {e}")
             # We're in a thread, so we need to use after to schedule UI updates
-            self.app.root.after(0, lambda: messagebox.showerror("Error", f"Error checking machine.", parent=self.app.root))
+            self.app.root.after(0, lambda: messagebox.showerror("Error", f"Error checking node.", parent=self.app.root))
