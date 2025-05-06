@@ -5,7 +5,6 @@
 *Output/
 
 # Exclude Python cache files
-*__main__.spec
 *src/modules/__pycache__/
 
 # Exclude Local Python Environment

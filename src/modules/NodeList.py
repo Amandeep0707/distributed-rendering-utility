@@ -7,6 +7,8 @@ class NodeList(ctk.CTkFrame):
         self.frame = ctk.CTkFrame(master, border_width=0, corner_radius=0)
         self.frame.pack(padx=(5, 0), pady=5, anchor="w", side="left", fill="y")
 
+        self.previous_machine = None
+
         # Add Node List title
         self.title_label = ctk.CTkLabel(self.frame, text="Render Nodes", font=ctk.CTkFont(size=15, weight="bold"), height=40)
         self.title_label.pack(anchor="w", side="top", pady=5, padx=(10, 5))
@@ -79,12 +81,14 @@ class NodeList(ctk.CTkFrame):
             )
             self.status_indicator.pack(side="left", padx=(10,5), pady=5)
 
+            button_color = "grey15" if self.previous_machine == node else "grey25"
+
             node_button = ctk.CTkButton(
                 node_frame,
                 text=node.get("display_name", f"Node {i+1}"),
-                fg_color="grey25",
+                fg_color=button_color,
                 anchor="w",
-                command=lambda m=node: self.app.node_details.on_node_select(m)
+                command=lambda m=node: self.on_button_clicked(m)
             )
             node_button.pack(side="left", padx=5, pady=5, fill="x", expand=True)
             self.node_buttons.append(node_button)
@@ -96,3 +100,16 @@ class NodeList(ctk.CTkFrame):
                     width=70
                 )
                 status_label.pack(side="right", padx=5, pady=5)
+
+    def on_button_clicked(self, node):
+
+        current_machine = node
+
+        # Update Details on Details Panel
+        self.app.node_details.on_node_select(current_machine)
+
+        # Updating Button Colors
+        if self.previous_machine:
+            self.node_buttons[self.app.nodes.index(self.previous_machine)].configure(fg_color="grey25")
+        self.node_buttons[self.app.nodes.index(current_machine)].configure(fg_color="grey15")
+        self.previous_machine = current_machine
