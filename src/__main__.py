@@ -27,6 +27,7 @@ class App:
         self.config_manager = ConfigManager("config.json")
         self.nodes = self.config_manager.nodes
         self.drive_credentials = self.config_manager.drive_credentials
+        self.defaults = self.config_manager.defaults
 
         # Create Main frame
         self.main_frame = ctk.CTkFrame(root, fg_color="transparent", border_width=0)

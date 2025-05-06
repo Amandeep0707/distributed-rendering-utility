@@ -6,7 +6,6 @@ class RenderManager:
     def __init__(self, app):
         self.app = app
         self.log_manager = app.log_manager
-        self.image_viewer = self.app.image_viewer
         self.ssh_clients = {} # Store SSH clients for each node
         self.suppress_render_errors = True
 
@@ -68,9 +67,8 @@ class RenderManager:
                 def run_render():
                     try:
                         stdin, stdout, stderr = client.exec_command(render_cmd)
-
-                        self.image_viewer.start_monitoring("Y:\Automated Rendering Test\Output", node)
                         
+                        current_frame = 0
                         # Monitor the output
                         for line in stdout:
                             # self.log_manager.log(node, line.strip())
@@ -85,7 +83,9 @@ class RenderManager:
                                             progress = current / total
                                             node.get("progress_bar").set(progress)
                                         if "Fra" in part:
-                                            current_frame = part.strip("Fra:")
+                                            if int(part.strip("Fra:")) > current_frame:
+                                                current_frame = int(part.strip("Fra:"))
+                                                self.on_frame_complete(current_frame, node)
                                             node.get("status_label").configure(text=f"Rendering: {current_frame}")
 
                                 except Exception as e:
@@ -165,6 +165,10 @@ class RenderManager:
         
         except Exception as e:
             self.log_manager.log(node, f"Error stopping render: {e}")
+
+    def on_frame_complete(self, frame, node):
+        node["current_frame"] = frame
+        self.app.image_viewer.start_monitoring(node)
 
     def render_all(self):
         """

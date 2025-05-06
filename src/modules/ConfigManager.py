@@ -8,9 +8,9 @@ class ConfigManager:
     def __init__(self, config_file: str):
         self.config_file = config_file
         self.config = {}
-
-        self.nodes = []
+        self.defaults = {}
         self.drive_credentials = {}
+        self.nodes = []
 
         self.load_config()
 
@@ -21,8 +21,9 @@ class ConfigManager:
         try:
             with open(self.config_file, 'r') as file:
                 self.config = json.load(file)
-                self.nodes = self.config.get("nodes", [])
+                self.defaults = self.config.get("defaults", {})
                 self.drive_credentials = self.config.get("drive_credentials", {})
+                self.nodes = self.config.get("nodes", [])
         except FileNotFoundError:
             print(f"Configuration file {self.config_file} not found.")
         except json.JSONDecodeError:
@@ -36,6 +37,7 @@ class ConfigManager:
             with open(self.config_file, 'w') as file:
                 json.dump(
                     {
+                        "defaults": self.defaults,
                         "drive_credentials": self.drive_credentials,
                         "nodes": obj
                     },

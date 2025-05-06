@@ -1,9 +1,11 @@
+import os
 import customtkinter as ctk
 
 class Footer(ctk.CTkFrame):
     def __init__(self, app, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.app = app
+        self.orig_file_path = os.path.dirname("Y:\Automated Rendering Test\Test.blend")
         self.frame = ctk.CTkFrame(master, border_width=0)
         self.frame.pack(padx=5, pady=(0, 5), anchor="s", fill="x")
 
@@ -53,6 +55,7 @@ class Footer(ctk.CTkFrame):
     def on_input_browse(self, callback):
         file_path = ctk.filedialog.askopenfilename(filetypes=[("Blender Files", "*.blend")])
         if file_path:
+            self.orig_file_path = os.path.dirname(file_path)
             if file_path.startswith("Y:"):
                 drive_path = self.app.drive_credentials.get("path")
                 file_path = file_path.replace("Y:", drive_path)

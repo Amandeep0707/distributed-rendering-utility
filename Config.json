@@ -86,5 +86,8 @@
             "status": "offline",
             "selected": false
         }
-    ]
+    ],
+    "defaults": {
+        "output_path": "//Output"
+    }
 }
