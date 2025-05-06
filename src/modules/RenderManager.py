@@ -6,6 +6,7 @@ class RenderManager:
     def __init__(self, app):
         self.app = app
         self.log_manager = app.log_manager
+        self.image_viewer = self.app.image_viewer
         self.ssh_clients = {} # Store SSH clients for each node
         self.suppress_render_errors = True
 
@@ -67,6 +68,8 @@ class RenderManager:
                 def run_render():
                     try:
                         stdin, stdout, stderr = client.exec_command(render_cmd)
+
+                        self.image_viewer.start_monitoring("Y:\Automated Rendering Test\Output", node)
                         
                         # Monitor the output
                         for line in stdout:

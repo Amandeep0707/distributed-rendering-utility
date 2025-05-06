@@ -13,7 +13,8 @@
             "username": "Admin",
             "password": "123456",
             "status": "offline",
-            "selected": false
+            "selected": false,
+            "drive_credentials": 25
         },
         {
             "display_name": "Arya's PC",

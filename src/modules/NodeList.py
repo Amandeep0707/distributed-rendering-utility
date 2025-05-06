@@ -5,7 +5,7 @@ class NodeList(ctk.CTkFrame):
         super().__init__(master, **kwargs)
         self.app = app
         self.frame = ctk.CTkFrame(master, border_width=0, corner_radius=0)
-        self.frame.pack(padx=(5, 0), pady=5, anchor="w", side="left", fill="y")
+        self.frame.pack(padx=(5, 0), pady=5, anchor="w", side="left", fill="both")
 
         self.previous_machine = None
 
@@ -81,7 +81,7 @@ class NodeList(ctk.CTkFrame):
             )
             self.status_indicator.pack(side="left", padx=(10,5), pady=5)
 
-            button_color = "grey15" if self.previous_machine == node else "grey25"
+            button_color = "grey10" if self.previous_machine == node else "grey30"
 
             node_button = ctk.CTkButton(
                 node_frame,
@@ -110,6 +110,6 @@ class NodeList(ctk.CTkFrame):
 
         # Updating Button Colors
         if self.previous_machine:
-            self.node_buttons[self.app.nodes.index(self.previous_machine)].configure(fg_color="grey25")
-        self.node_buttons[self.app.nodes.index(current_machine)].configure(fg_color="grey15")
+            self.node_buttons[self.app.nodes.index(self.previous_machine)].configure(fg_color="grey30")
+        self.node_buttons[self.app.nodes.index(current_machine)].configure(fg_color="grey10")
         self.previous_machine = current_machine

@@ -5,7 +5,7 @@ class NodeDetails(ctk.CTkFrame):
         super().__init__(master, **kwargs)
         self.app = app
         self.frame = ctk.CTkFrame(master)
-        self.frame.pack(padx=5, pady=5, anchor="n", fill="x")
+        self.frame.pack(padx=5, pady=5, anchor="n", side="top", fill="x")
         self.main_activity_frame = None
         self.details_frame = None
 
@@ -41,6 +41,10 @@ class NodeDetails(ctk.CTkFrame):
         self.wake_button = ctk.CTkButton(self.main_activity_frame, text="Wake Node", command=lambda: self.app.node_manager.wake_node(self.app.active_node))
         self.wake_button.pack(anchor="w", side="left", padx=(5, 0), pady=5)
         self.wake_button.configure(state="disabled")
+
+        self.shutdown_button = ctk.CTkButton(self.main_activity_frame, text="Shutdown Node", command=lambda: self.app.node_manager.shutdown_node(self.app.active_node))
+        self.shutdown_button.pack(anchor="w", side="left", padx=(5, 0), pady=5)
+        self.shutdown_button.configure(state="disabled")
 
         self.start_render_button = ctk.CTkButton(self.main_activity_frame, text="Start Render", command=lambda: self.app.render_manager.start_render(self.app.active_node))
         self.start_render_button.pack(anchor="w", side="left", padx=(5, 0), pady=5)
@@ -80,6 +84,7 @@ class NodeDetails(ctk.CTkFrame):
 
         # Enable buttons
         self.wake_button.configure(state="normal")
+        self.shutdown_button.configure(state="normal")
         self.start_render_button.configure(state="normal")
         self.stop_render_button.configure(state="normal")
         self.edit_node_button.configure(state="normal")

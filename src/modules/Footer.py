@@ -93,11 +93,11 @@ class Footer(ctk.CTkFrame):
 
         ctk.CTkLabel(dialog, text="Render Engine:").grid(row=3, column=0, padx=10, pady=5, sticky="w")
         self.render_engine_var = ctk.StringVar(value="CYCLES")
-        ctk.CTkOptionMenu(dialog, variable=self.render_engine_var, values=["BLENDER_EEVEE_NEXT", "CYCLES", "BLENDER_WORKBENCH"], command=lambda x: self.render_engine_var.set(x)).grid(row=3, column=1, padx=10, pady=5, sticky="e")
+        ctk.CTkOptionMenu(dialog, variable=self.render_engine_var, values=["BLENDER_EEVEE_NEXT", "CYCLES", "BLENDER_WORKBENCH"], command=lambda x: self.render_engine_var.set(x)).grid(row=3, column=1, padx=10, pady=5, sticky="w")
 
         ctk.CTkLabel(dialog, text="Output Format:").grid(row=4, column=0, padx=10, pady=5, sticky="w")
         self.output_format_var = ctk.StringVar(value="PNG")
-        ctk.CTkOptionMenu(dialog, variable=self.output_format_var, values=["JPEG", "PNG", "Webp"], command=lambda x: self.output_format_var.set(x)).grid(row=4, column=1, padx=10, pady=5, sticky="e")
+        ctk.CTkOptionMenu(dialog, variable=self.output_format_var, values=["JPEG", "PNG", "Webp"], command=lambda x: self.output_format_var.set(x)).grid(row=4, column=1, padx=10, pady=5, sticky="w")
 
         def checkbox_event():
             if check_var.get() == "on":

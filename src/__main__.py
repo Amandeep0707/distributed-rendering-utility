@@ -8,14 +8,16 @@ from modules.ConfigManager import ConfigManager
 from modules.LogManager import LogManager
 from modules.NodeManager import NodeManager
 from modules.RenderManager import RenderManager
+from modules.ImageViewer import ImageViewer
 
 class App:
     def __init__(self, root):
         self.root = root
         self.root.title("Render Utility")
-        self.root.geometry("1400x900")
-        self.root.minsize(1100, 600)
+        self.root.geometry("1600x900")
+        self.root.minsize(1200, 600)
 
+        # ctk.ThemeManager().load_theme("theme.json")
         ctk.ThemeManager().load_theme("theme.json")
 
         self.active_node = None  # Currently selected node
@@ -41,10 +43,13 @@ class App:
 
         # Create Node Details Panel
         self.node_details_frame = ctk.CTkFrame(self.middle_frame, fg_color="transparent", border_width=0)
-        self.node_details_frame.pack(anchor="e", fill="both", expand=True)
+        self.node_details_frame.pack(anchor="w", side="left", fill="both", expand=True)
 
         self.node_details = NodeDetails(self, self.node_details_frame)
         self.render_log = RenderLog(self, self.node_details_frame)
+
+        # Render Image Monitor
+        self.image_viewer = ImageViewer(self, self.middle_frame)
 
         # Create Footer
         self.footer = Footer(self, self.main_frame)

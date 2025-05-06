@@ -1,11 +1,12 @@
 import customtkinter as ctk
+from modules.ImageViewer import ImageViewer
 
 class RenderLog(ctk.CTkFrame):
     def __init__(self, app, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.app = app
         self.frame = ctk.CTkFrame(master, border_width=0, corner_radius=0)
-        self.frame.pack(padx=5, pady=(0, 5), anchor="se", fill="both", expand=True)
+        self.frame.pack(padx=5, pady=(0, 5), anchor="s",side="bottom", fill="both", expand=True)
 
         # Add Render Log Textbox
         self.title = "Render Log:"
@@ -17,5 +18,7 @@ class RenderLog(ctk.CTkFrame):
         self.log_text.configure(state="disabled")
 
     def update_title(self):
+        if not self.app.active_node["name"]: return
+        
         self.title = self.app.active_node["name"]
         self.render_log_label.configure(text=f"Render Log({self.title}):")

@@ -250,7 +250,6 @@ class NodeManager:
             sock.sendto(magic_packet, broadcast_address)
             sock.close()
             self.log_manager.log(node, "Magic packet sent successfully.")
-            self.log_manager.log(node, "Waiting for node to boot up...")
 
             def check_online():
                 for _ in range(30):
@@ -262,6 +261,7 @@ class NodeManager:
                     return False
                     
             def check_online():
+                self.log_manager.log(node, f"Waiting for node to respond...")
                 for attempt in range(30):
                     try:
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -271,8 +271,6 @@ class NodeManager:
                         
                         if result == 0:
                             return True
-                        
-                        self.log_manager.log(node, f"Waiting for node to respond... ({attempt+1}/{30})")
                         time.sleep(2)
                     except Exception as e:
                         self.log_manager.log(node, f"Connection attempt failed: {e}")
@@ -290,6 +288,87 @@ class NodeManager:
         
         except Exception as e:
             self.log_manager.log(node, f"Error waking node: {str(e)}")
+
+    def shutdown(self, node):
+        try:
+            self.log_manager.log(node, "Shutting down node...")
+            
+            # Create a socket and set a shorter timeout
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(2)  # 2 second timeout
+            
+            result = sock.connect_ex((node.get("ip"), 22))
+            sock.close()
+            
+            if result == 0:
+                # Send shutdown command via SSH
+                self.log_manager.log(node, "Sending shutdown command...")
+                import paramiko
+                
+                ssh = paramiko.SSHClient()
+                ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                
+                try:
+                    ssh.connect(
+                        node.get("ip"),
+                        username=node.get("username"),
+                        password=node.get("password"),
+                        timeout=5
+                    )
+                    
+                    shutdown_command = "shutdown /s /t 0"
+                    stdin, stdout, stderr = ssh.exec_command(shutdown_command)
+                    
+                    # Check for errors
+                    error = stderr.read().decode()
+                    if error:
+                        self.log_manager.log(node, f"Shutdown error: {error}")
+                    else:
+                        self.log_manager.log(node, "Shutdown command sent successfully")
+                    
+                    ssh.close()
+                    
+                    # Wait a bit for the node to begin shutdown
+                    self.log_manager.log(node, "Waiting for node to shut down...")
+                    time.sleep(10)  # Wait for 10 seconds before checking status
+                    
+                    # Check if the node is actually offline
+                    try:
+                        check_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        check_sock.settimeout(2)
+                        result = check_sock.connect_ex((node.get("ip"), 22))
+                        check_sock.close()
+                        
+                        if result == 0:
+                            self.log_manager.log(node, "Node is still online, shutdown may have failed or delayed.")
+                            node["status"] = "online"
+                        else:
+                            node["status"] = "offline"
+                            self.log_manager.log(node, "Node is now offline.")
+                    except Exception as check_error:
+                        self.log_manager.log(node, f"Error checking node status: {str(check_error)}")
+                        node["status"] = "unknown"
+                    
+                except Exception as ssh_error:
+                    self.log_manager.log(node, f"SSH error: {str(ssh_error)}")
+            else:
+                self.log_manager.log(node, "Node is not reachable.")
+
+            self.app.root.after(0, lambda: self.app.node_list.update_list(self.app.nodes))
+
+        except Exception as e:
+            self.log_manager.log(node, f"Error shutting down node: {str(e)}")
+
+    def shutdown_node(self, node):
+        if not node:
+            messagebox.showerror("Error", "No node selected.", parent=self.app.root)
+            return
+        
+        if node.get("status") == "offline":
+            messagebox.showinfo("Info", "Node is already offline.", parent=self.app.root)
+            return
+        
+        threading.Thread(target=self.shutdown, args=(node,), daemon=True).start()
 
     def check_all_nodes(self):
         """
@@ -318,6 +397,7 @@ class NodeManager:
                     self.log_manager.log(node, f"Error checking node status: {str(e)}", False)
 
             # Update the UI from the main thread
+            self.app.node_list.on_button_clicked(self.app.nodes[0])
             self.app.root.after(0, lambda: self.app.node_list.update_list(self.app.nodes))
 
         except Exception as e:
